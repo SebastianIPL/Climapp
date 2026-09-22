@@ -1,0 +1,140 @@
+<div class="app-screen" [ngClass]="airData.statusClass">
+  
+  <!-- Buscador Superior -->
+  <header class="search-section">
+    <h2 class="search-title">¿A dónde vamos?</h2>
+    
+    <div class="custom-dropdown-container">
+      <div class="search-bar" (click)="toggleDropdown($event)">
+        <div class="search-input-content">
+          <img src="assets/img/MAP.png" alt="Ubicación" class="pin-icon" />
+          <span class="location-name">{{ selectedLocation }}</span>
+        </div>
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="16.5" y1="16.5" x2="21.5" y2="21.5"></line>
+        </svg>
+      </div>
+
+      <div 
+        class="dropdown-overlay" 
+        *ngIf="isDropdownOpen" 
+        (click)="isDropdownOpen = false">
+      </div>
+
+      <div class="dropdown-card" *ngIf="isDropdownOpen" (click)="$event.stopPropagation()">
+        <div 
+          *ngFor="let loc of locations" 
+          class="dropdown-option"
+          [class.active]="loc === selectedLocation"
+          (click)="selectLocation(loc, $event)">
+          <span>{{ loc }}</span>
+          <span *ngIf="loc === selectedLocation" class="check-mark">✓</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Panel Central -->
+  <main class="main-display">
+    <h3 class="section-title">Calidad del Aire Actual</h3>
+
+    <div class="hero-face-wrapper">
+      <img [src]="airData.heroIconSrc" [alt]="airData.statusText" class="hero-face-img" />
+    </div>
+
+    <h1 class="verdict-banner">{{ airData.statusText }}</h1>
+
+    <div class="metrics-row">
+      <div class="metric-pill">
+        <span>MP2.5: <strong>{{ airData.pm25 }} µg/m³</strong></span>
+      </div>
+      <div class="metric-pill">
+        <span>MP10: <strong>{{ airData.pm10 }} µg/m³</strong></span>
+      </div>
+    </div>
+
+    <!-- Carrusel de horas -->
+    <section class="forecast-section">
+      <h4 class="forecast-title">Cambios durante el día:</h4>
+
+      <div class="forecast-carousel">
+        <button 
+          class="carousel-arrow-btn" 
+          (click)="slideLeft($event)" 
+          [class.disabled]="currentStartIndex === 0" 
+          type="button" 
+          aria-label="Hora anterior">
+          <img src="assets/img/L.png" alt="Anterior" class="arrow-img" />
+        </button>
+
+        <div 
+          class="timeline-cards"
+          (touchstart)="onTouchStart($event)"
+          (touchend)="onTouchEnd($event)"
+          (mousedown)="onMouseDown($event)"
+          (mouseup)="onMouseUp($event)">
+          <div class="timeline-card" *ngFor="let item of visibleTimeline">
+            <img [src]="item.iconSrc" [alt]="item.timeLabel" class="card-face" />
+            <span class="card-time">{{ item.timeLabel }}</span>
+          </div>
+        </div>
+
+        <button 
+          class="carousel-arrow-btn" 
+          (click)="slideRight($event)" 
+          [class.disabled]="currentStartIndex + 3 >= allHours.length" 
+          type="button" 
+          aria-label="Siguiente hora">
+          <img src="assets/img/R.png" alt="Siguiente" class="arrow-img" />
+        </button>
+      </div>
+    </section>
+
+    <!-- Botón de Ayuda (?) -->
+<div class="help-section-row">
+  <button class="help-circle-btn" (click)="toggleHelp($event)" type="button" aria-label="Ayuda">
+    <span>?</span>
+  </button>
+</div>
+
+<!-- CUADRO DE PREGUNTAS FRECUENTES TIPO ACORDEÓN -->
+<div class="faq-bubble-card" *ngIf="isHelpOpen">
+  <div class="faq-accordion-list">
+    <div class="faq-accordion-item" *ngFor="let item of faqList" [class.open]="item.isOpen">
+      <div class="faq-header" (click)="toggleFaq(item, $event)">
+        <span class="faq-bullet">•</span>
+        <strong class="faq-question">{{ item.question }}</strong>
+        <span class="faq-toggle-icon">{{ item.isOpen ? '−' : '+' }}</span>
+      </div>
+      <div class="faq-body" *ngIf="item.isOpen">
+        <p class="faq-answer">{{ item.answer }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- SECCIÓN DE RECOMENDACIONES (Si la ayuda está cerrada) -->
+    <ng-container *ngIf="!isHelpOpen">
+      <section class="recommendations-section">
+        <h3 class="recommendations-title">Recomendaciones:</h3>
+        
+        <div class="recommendations-list">
+          <div class="recommendation-card" *ngFor="let rec of airData.recommendations">
+            <div class="rec-icon-wrapper">
+              <img [src]="rec.iconSrc" alt="Icono" class="rec-icon" />
+            </div>
+            <div class="rec-text-wrapper">
+              <p [innerHTML]="rec.text"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="store-badges-footer">
+        <img src="assets/img/image 5.png" alt="Disponible en Google Play" class="google-play-badge" />
+        <img src="assets/img/image 6.png" alt="Descárgalo en el App Store" class="app-store-badge" />
+      </footer>
+    </ng-container>
+
+  </main>
+</div>

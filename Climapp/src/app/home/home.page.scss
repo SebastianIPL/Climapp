@@ -1,0 +1,624 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;500;600;700&display=swap');
+
+// Paleta cromática oficial
+$color-azul: #2AB7D9;
+$color-amarillo: #FFB700;
+$color-rojo: #D62828;
+$color-blanco: #FFFFFF;
+$color-negro: #000001;
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: $color-azul; // Sincronizado por defecto
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+// Chasis de la app (móvil y tablet)
+.app-screen {
+  width: 100%;
+  max-width: 460px; // Límite para mantener la proporción de afiche en iPad
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(16px, 2.5dvh, 26px) clamp(16px, 4.5vw, 24px) clamp(28px, 4dvh, 44px) clamp(16px, 4.5vw, 24px);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: background-color 0.25s ease;
+  user-select: none;
+  overflow: visible;
+
+  &.status-good {
+    background-color: $color-azul;
+  }
+
+  &.status-moderate {
+    background-color: $color-amarillo;
+  }
+
+  &.status-danger {
+    background-color: $color-rojo;
+  }
+
+  // Ajustes de escala estética para iPad / Tablets
+  @media (min-width: 768px) {
+    max-width: 500px;
+    padding: 32px 28px 48px 28px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.15); // Sombreo para destacar chasis en pantallas anchas
+  }
+}
+
+// Buscador Superior
+.search-section {
+  position: relative;
+  z-index: 1000;
+  width: 100%;
+  flex-shrink: 0;
+  margin-bottom: clamp(12px, 2dvh, 18px);
+
+  .search-title {
+    color: $color-blanco;
+    font-family: 'Roboto', sans-serif;
+    font-size: clamp(20px, 2.8dvh, 24px);
+    font-weight: 700;
+    letter-spacing: 0;
+    margin: 0 0 8px 4px;
+    line-height: 1.2;
+  }
+
+  .custom-dropdown-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .search-bar {
+    background: $color-blanco;
+    border-radius: 28px;
+    padding: 12px clamp(14px, 3.5vw, 20px);
+    min-height: clamp(52px, 6.8dvh, 60px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    cursor: pointer;
+
+    .search-input-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+
+      .pin-icon {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .location-name {
+        font-family: 'Roboto', sans-serif;
+        font-size: clamp(21px, 2.8dvh, 26px);
+        font-weight: 700;
+        letter-spacing: 0;
+        color: $color-negro;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .search-icon {
+      width: 24px;
+      height: 24px;
+      color: $color-negro;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+  }
+
+  .dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1001;
+  }
+
+  .dropdown-card {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background: $color-blanco;
+    border-radius: 24px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    padding: 8px;
+    max-height: clamp(240px, 36dvh, 320px);
+    overflow-y: auto;
+    z-index: 1002;
+    box-sizing: border-box;
+
+    .dropdown-option {
+      font-family: 'Roboto', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+      padding: 12px 18px;
+      margin: 2px 0;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:active {
+        background-color: #f1f5f9;
+      }
+
+      &.active {
+        background-color: #e2e8f0;
+        color: $color-negro;
+        font-weight: 700;
+
+        .check-mark {
+          color: $color-azul;
+          font-weight: 800;
+        }
+      }
+    }
+  }
+}
+
+// Panel Central
+.main-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex-shrink: 0;
+
+  .section-title {
+    color: $color-blanco;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(22px, 3dvh, 28px);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    margin: 8px 0 6px 0;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .hero-face-wrapper {
+    width: clamp(80px, 11dvh, 104px);
+    height: clamp(80px, 11dvh, 104px);
+    border-radius: 50%;
+    background: $color-blanco;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 6px 0;
+    flex-shrink: 0;
+
+    .hero-face-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .verdict-banner {
+    color: $color-blanco;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(42px, 6dvh, 52px);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    margin: 0 0 clamp(8px, 1.4dvh, 14px) 0;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .metrics-row {
+    display: flex;
+    gap: clamp(10px, 2.5vw, 14px);
+    justify-content: center;
+    width: 100%;
+    margin-bottom: clamp(12px, 2dvh, 18px);
+
+    .metric-pill {
+      flex: 1;
+      max-width: 160px;
+      height: clamp(50px, 6.8dvh, 60px);
+      background: $color-blanco;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      box-sizing: border-box;
+
+      span {
+        font-family: 'Roboto', sans-serif;
+        font-size: clamp(15px, 2dvh, 18px);
+        font-weight: 500;
+        letter-spacing: 0;
+        color: $color-negro;
+        white-space: nowrap;
+
+        strong {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+// Carrusel de horas
+.forecast-section {
+  width: 100%;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+
+  .forecast-title {
+    color: $color-blanco;
+    font-family: 'Roboto', sans-serif;
+    font-size: clamp(21px, 2.9dvh, 26px);
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.1;
+    text-align: left;
+    margin: 0 0 clamp(8px, 1.4dvh, 12px) 2px;
+  }
+
+  .forecast-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(4px, 1.5vw, 10px);
+    width: 100%;
+
+    .carousel-arrow-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      width: clamp(32px, 4.2dvh, 40px);
+      height: clamp(32px, 4.2dvh, 40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+
+      .arrow-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      &.disabled {
+        opacity: 0.2;
+        pointer-events: none;
+      }
+    }
+
+    .timeline-cards {
+      display: flex;
+      gap: clamp(8px, 2vw, 12px);
+      justify-content: center;
+      flex: 1;
+      touch-action: pan-y;
+      cursor: grab;
+      user-select: none;
+
+      &:active {
+        cursor: grabbing;
+      }
+
+      .timeline-card {
+        flex: 1;
+        max-width: 92px;
+        min-width: 0;
+        height: clamp(108px, 14dvh, 126px);
+        background: $color-blanco;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: clamp(8px, 1.2dvh, 12px) 4px clamp(6px, 1dvh, 10px) 4px;
+        box-sizing: border-box;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+
+        .card-face {
+          width: clamp(40px, 5.2dvh, 50px);
+          height: clamp(40px, 5.2dvh, 50px);
+          object-fit: contain;
+          pointer-events: none;
+        }
+
+        .card-time {
+          font-family: 'Roboto', sans-serif;
+          font-size: clamp(15px, 1.9dvh, 18px);
+          font-weight: 600;
+          letter-spacing: 0;
+          color: $color-negro;
+          pointer-events: none;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+// Botón de Ayuda (?) y Speech Bubble
+.help-section-row {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 6px 0 10px 0;
+  flex-shrink: 0;
+
+  .help-circle-btn {
+    background: $color-blanco;
+    border: 3px solid $color-negro;
+    border-radius: 50%;
+    width: clamp(40px, 5dvh, 46px);
+    height: clamp(40px, 5dvh, 46px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    padding: 0;
+    outline: none;
+
+    span {
+      font-family: 'Roboto', sans-serif;
+      font-size: clamp(22px, 2.8dvh, 28px);
+      font-weight: 700;
+      color: $color-negro;
+      line-height: 1;
+      margin-top: -1px;
+    }
+  }
+}
+
+.faq-bubble-card {
+  position: relative;
+  width: 100%;
+  background: $color-blanco;
+  border-radius: 20px;
+  padding: clamp(16px, 2.2dvh, 22px) clamp(14px, 3.5vw, 20px);
+  margin-top: 14px;
+  margin-bottom: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    right: 12px;
+    width: 20px;
+    height: 14px;
+    background: $color-blanco;
+    clip-path: polygon(45% 0%, 0% 100%, 100% 100%);
+  }
+
+  .faq-accordion-list {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+
+    .faq-accordion-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 10px;
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .faq-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        cursor: pointer;
+        user-select: none;
+        padding: 4px 0;
+
+        .faq-bullet {
+          font-size: 20px;
+          line-height: 24px;
+          color: $color-negro;
+          font-weight: 700;
+        }
+
+        .faq-question {
+          flex: 1;
+          font-family: 'Roboto', sans-serif;
+          font-size: clamp(16px, 2.1dvh, 18px); /* Aumentado a 18px */
+          font-weight: 700;
+          color: $color-negro;
+          line-height: 24px;
+          letter-spacing: 0;
+          text-align: left;
+        }
+
+        .faq-toggle-icon {
+          font-family: 'Roboto', monospace, sans-serif;
+          font-size: 22px;
+          font-weight: 700;
+          color: $color-negro;
+          width: 28px;
+          height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          background: #f1f5f9;
+          border-radius: 50%;
+          line-height: 1;
+          margin-top: 1px;
+          transition: background-color 0.2s ease;
+        }
+
+        &:active .faq-toggle-icon {
+          background-color: #e2e8f0;
+        }
+      }
+
+      .faq-body {
+        padding-left: 24px;
+        padding-right: 6px;
+        animation: faqSlideDown 0.2s ease-out;
+
+        .faq-answer {
+          font-family: 'Roboto', sans-serif;
+          font-size: clamp(15px, 2dvh, 16.5px); /* Aumentado para mayor claridad */
+          font-weight: 400;
+          color: #334155;
+          line-height: 1.5;
+          letter-spacing: 0;
+          margin: 8px 0 6px 0;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+
+@keyframes faqSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+// Sección de Recomendaciones
+.recommendations-section {
+  width: 100%;
+  margin-bottom: clamp(16px, 2.2dvh, 24px);
+  flex-shrink: 0;
+
+  .recommendations-title {
+    color: $color-blanco;
+    font-family: 'Roboto', sans-serif;
+    font-size: clamp(21px, 2.9dvh, 26px);
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.1;
+    text-align: left;
+    margin: 0 0 clamp(10px, 1.5dvh, 14px) 2px;
+  }
+
+  .recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 1.5dvh, 14px);
+    width: 100%;
+
+    .recommendation-card {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: clamp(12px, 2.5vw, 16px);
+      width: 100%;
+
+      .rec-icon-wrapper {
+        width: clamp(46px, 5.5dvh, 52px);
+        height: clamp(46px, 5.5dvh, 52px);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .rec-icon {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+      }
+
+      .rec-text-wrapper {
+        flex: 1;
+        min-width: 0;
+        min-height: clamp(62px, 7.5dvh, 70px);
+        height: auto;
+        background: $color-blanco;
+        border-radius: 8px;
+        padding: 8px clamp(12px, 2.5vw, 16px);
+        box-sizing: border-box;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+
+        p {
+          font-family: 'Roboto', sans-serif;
+          font-size: clamp(14px, 1.8dvh, 16px);
+          font-weight: 400;
+          letter-spacing: 0;
+          color: $color-negro;
+          line-height: 1.35;
+          margin: 0;
+          text-align: left;
+
+          strong {
+            font-weight: 700;
+            color: $color-negro;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Badges del Footer
+.store-badges-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 3vw, 16px);
+  margin-top: 6px;
+  padding-bottom: clamp(16px, 3dvh, 28px);
+  flex-shrink: 0;
+
+  .google-play-badge {
+    width: clamp(126px, 28vw, 142px);
+    height: auto;
+    max-height: 42px;
+    object-fit: contain;
+    cursor: pointer;
+  }
+
+  .app-store-badge {
+    width: clamp(114px, 25vw, 128px);
+    height: auto;
+    max-height: 42px;
+    object-fit: contain;
+    cursor: pointer;
+  }
+}
